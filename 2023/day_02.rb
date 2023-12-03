@@ -46,9 +46,18 @@ class Day02 < Base
   end
 
   def part_2(file)
+    parsed = parsed_input(file)
+
+    sum = 0
+    parsed.each do |game|
+      sum += game[1]["red"] * game[1]["blue"] * game[1]["green"]
+    end
+    sum
   end
 end
 
 day = Day02.new
 puts "Example 1: #{day.part_1(day.example_input_a)}"
 puts "Part 1: #{day.part_1(day.input)}"
+puts "Example 2: #{day.part_2(day.example_input_a)}"
+puts "Part 2: #{day.part_2(day.input)}"
