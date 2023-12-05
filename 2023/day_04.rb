@@ -35,9 +35,51 @@ class Day04 < Base
     sum
   end
 
-  def part2(_input); end
+  def part2(input)
+    parsed = parse_input(input)
+
+    parsed.each do |game|
+      found = 0
+      game[:winning_numbers].each do |winning_number|
+        found += 1 if game[:player_numbers].include?(winning_number)
+      end
+      game[:num_matches] = found
+
+      game[:value] = if found > 0
+                       2**(found - 1)
+                     else
+                       0
+                     end
+    end
+
+    games = parsed.map do |game|
+      game[:instances] = 1
+      game
+    end
+
+    games.each_with_index do |game, index|
+      next unless game[:num_matches] > 0
+
+      (1..(game[:num_matches])).each do |i|
+        current = games[index + i]
+        current[:instances] += (1 * game[:instances]) unless current.nil?
+      end
+    end
+
+    # 1 instance of card 1,
+    # 2 instances of card 2,
+    # 4 instances of card 3,
+    # 8 instances of card 4,
+    # 14 instances of card 5,
+    # 1 instance of card 6.
+    # 30 scratchcards!
+
+    games.map { |game| game[:instances] }.sum
+  end
 end
 
 day = Day04.new
 puts "Example 1: #{day.part1(day.example_input_a)}"
 puts "Part 1: #{day.part1(day.input)}"
+puts "Example 2: #{day.part2(day.example_input_a)}"
+puts "Part 2: #{day.part2(day.input)}"
