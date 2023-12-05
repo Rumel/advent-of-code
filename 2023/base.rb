@@ -1,5 +1,6 @@
 require 'pry'
 require 'pry-byebug'
+require 'benchmark'
 
 if defined?(PryByebug)
   Pry.commands.alias_command 'c', 'continue'
