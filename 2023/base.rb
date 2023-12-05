@@ -1,8 +1,16 @@
 require 'pry'
+require 'pry-byebug'
+
+if defined?(PryByebug)
+  Pry.commands.alias_command 'c', 'continue'
+  Pry.commands.alias_command 's', 'step'
+  Pry.commands.alias_command 'n', 'next'
+  Pry.commands.alias_command 'f', 'finish'
+end
 
 class Base
   def day
-    raise "You must define a day"
+    raise 'You must define a day'
   end
 
   def example_input_a
