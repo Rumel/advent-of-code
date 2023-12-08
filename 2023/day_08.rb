@@ -44,11 +44,32 @@ class Day08 < Base
 
   def part2(input)
     data = parse_input(input)
+
+    nodes = data[:nodes]
+    currents = nodes.keys.select { |k| k.end_with?('A') }
+
+    steps_arr = []
+    currents.each do |current|
+      directions_cycle = data[:directions].cycle
+      steps = 0
+      while true
+        break if current.end_with?('Z')
+
+        direction = directions_cycle.next
+        current = nodes[current][direction]
+
+        steps += 1
+      end
+
+      steps_arr << steps
+    end
+
+    steps_arr.reduce(1, :lcm)
   end
 end
 
 day = Day08.new
 puts "Example: #{day.part1(day.example_input_a)}"
 puts "Part 1: #{day.part1(day.input)}"
-# puts "Example 2: #{day.part2(day.example_input_a)}"
-# puts "Part 2: #{day.part2(day.input)}"
+puts "Example 2: #{day.part2(day.example_input_b)}"
+puts "Part 2: #{day.part2(day.input)}"
