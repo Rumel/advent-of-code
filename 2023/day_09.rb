@@ -39,9 +39,37 @@ class Day09 < Base
 
   def part2(input)
     data = parse_input(input)
+
+    previous_values = []
+    data.each do |line|
+      length = line.length
+      finished = false
+      finals = []
+      current = line
+      until finished
+        i = 0
+        diffs = []
+        while i < current.length - 1
+          diffs << current[i + 1] - current[i]
+          i += 1
+        end
+        finished = diffs.all? 0
+        current = diffs
+        finals << current.first
+      end
+
+      x = 0
+      finals.reverse.each do |final|
+        x = final - x
+      end
+      previous_values << line.first - x
+    end
+    previous_values.sum
   end
 end
 
 day = Day09.new
 puts "Example: #{day.part1(day.example_input_a)}"
 puts "Part 1: #{day.part1(day.input)}"
+puts "Example: #{day.part2(day.example_input_a)}"
+puts "Example: #{day.part2(day.input)}"
