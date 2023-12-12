@@ -22,7 +22,7 @@ class Day11 < Base
     { galaxies:, columns: missing_columns, rows: missing_rows }
   end
 
-  def part1(input)
+  def part(input, modifier)
     data = parse_input(input)
 
     galaxies = data[:galaxies]
@@ -48,21 +48,17 @@ class Day11 < Base
                               columns.intersection((x2..x1).to_set).length
                             end
 
-      distances << (y2 - y1).abs + (x2 - x1).abs + row_intersection + column_intersection
+      distances << (y2 - y1).abs + (x2 - x1).abs + (row_intersection * modifier) + (column_intersection * modifier)
     end
 
-    # Too low
-    # 9504907
-
     distances.sum
-  end
-
-  def part2(input)
-    data = parse_input(input)
-    0
   end
 end
 
 day = Day11.new
-puts "Example: #{day.part1(day.example_input_a)}"
-puts "Part 1: #{day.part1(day.input)}"
+puts "Example: #{day.part(day.example_input_a, 1)}"
+puts "Part 1: #{day.part(day.input, 1)}"
+puts "Example: #{day.part(day.example_input_a, 1)}"
+puts "Example: #{day.part(day.example_input_a, 9)}"
+puts "Example: #{day.part(day.example_input_a, 99)}"
+puts "Part 2: #{day.part(day.input, 999_999)}"
