@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Day14 < Base
   def day
@@ -14,7 +16,7 @@ class Day14 < Base
     height = lines.length
 
     lines.each_with_index do |line, y|
-      chars = line.split('')
+      chars = line.chars
       width = chars.length if width.zero?
 
       chars.each_with_index do |char, x|
@@ -31,11 +33,11 @@ class Day14 < Base
   end
 
   def part_1(input)
-    data = parse_input(input)
+    parse_input(input)
   end
 
   def part_2(input)
-    data = parse_input(input)
+    parse_input(input)
   end
 end
 
