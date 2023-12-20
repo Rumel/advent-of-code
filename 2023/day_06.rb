@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Day06 < Base
   def day
@@ -8,8 +10,8 @@ class Day06 < Base
   def parse_input(input)
     lines = input.split("\n")
 
-    times = lines[0].split(':').last.strip.split(' ').map(&:to_i)
-    distances = lines[1].split(':').last.strip.split(' ').map(&:to_i)
+    times = lines[0].split(':').last.strip.split.map(&:to_i)
+    distances = lines[1].split(':').last.strip.split.map(&:to_i)
 
     [times, distances]
   end
@@ -27,7 +29,7 @@ class Day06 < Base
       start = (results[0] + 1).floor
       end_value = (results[1] - 1).ceil
 
-      values << end_value - start + 1
+      values << (end_value - start + 1)
     end
 
     values.inject(:*)
@@ -35,8 +37,8 @@ class Day06 < Base
 
   def part2(input)
     data = parse_input(input)
-    time = data[0].join('').to_i
-    distance = data[1].join('').to_i
+    time = data[0].join.to_i
+    distance = data[1].join.to_i
 
     results = quadratic_formula(1, time * -1, distance)
     start = (results[0] + 1).floor

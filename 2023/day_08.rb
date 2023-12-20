@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Day08 < Base
   def day
@@ -8,7 +10,7 @@ class Day08 < Base
   def parse_input(input)
     lines = input.split("\n")
 
-    directions = lines[0].split('')
+    directions = lines[0].chars
 
     nodes = {}
     lines[2..].each do |line|
@@ -30,7 +32,7 @@ class Day08 < Base
     directions_cycle = data[:directions].cycle
     nodes = data[:nodes]
     current = 'AAA'
-    while true
+    loop do
       break if current == 'ZZZ'
 
       direction = directions_cycle.next
@@ -52,7 +54,7 @@ class Day08 < Base
     currents.each do |current|
       directions_cycle = data[:directions].cycle
       steps = 0
-      while true
+      loop do
         break if current.end_with?('Z')
 
         direction = directions_cycle.next

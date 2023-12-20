@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Day11 < Base
   def day
@@ -8,7 +10,7 @@ class Day11 < Base
   def parse_input(input)
     galaxies = []
     input.split("\n").each_with_index do |line, i|
-      line.split('').each_with_index do |char, j|
+      line.chars.each_with_index do |char, j|
         galaxies << [j, i] if char == '#'
       end
     end
@@ -48,7 +50,7 @@ class Day11 < Base
                               columns.intersection((x2..x1).to_set).length
                             end
 
-      distances << (y2 - y1).abs + (x2 - x1).abs + (row_intersection * modifier) + (column_intersection * modifier)
+      distances << ((y2 - y1).abs + (x2 - x1).abs + (row_intersection * modifier) + (column_intersection * modifier))
     end
 
     distances.sum

@@ -1,7 +1,9 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Point
-  attr_accessor :x, :y, :directions, :point, :connected_points
+  attr_accessor :x, :y, :directions, :connected_points
 
   def initialize(x, y, pipe_symbol)
     @x = x
@@ -71,7 +73,7 @@ class Point
   end
 
   def connected_points_s
-    @connected_points_s ||= '[' + connected_points.map { |p| "(#{p[0]},#{p[1]})" }.join(',') + ']'
+    @connected_points_s ||= "[#{connected_points.map { |p| "(#{p[0]},#{p[1]})" }.join(',')}]"
   end
 end
 
@@ -86,7 +88,7 @@ class Day10 < Base
     fields = {}
 
     lines.each_with_index do |line, y|
-      line.each_char.each_with_index do |char, x|
+      line.each_char.with_index do |char, x|
         fields["#{x},#{y}"] = Point.new(x, y, char)
       end
     end
@@ -108,7 +110,7 @@ class Day10 < Base
       next if current.nil?
 
       data = { steps: 0, finished: false, current: [current_x, current_y], previous: [starting.x, starting.y] }
-      data = follow_path(fields, [starting.x, starting.y], data) until data[:finished]
+      data = follow_path(fields, data) until data[:finished]
 
       loop_steps << data[:steps]
     end
@@ -116,31 +118,30 @@ class Day10 < Base
     loop_steps.max / 2
   end
 
-  def follow_path(fields, previous, data)
+  def follow_path(fields, data)
     cur = "#{data[:current][0]},#{data[:current][1]}"
 
     previous = data[:current]
-    if fields[cur].nil?
+    next_point = fields[cur].connected_points.reject { |p| p == data[:previous] }.first
+
+    if fields[cur].nil? ||
+       fields[cur].ground? ||
+       (!fields[cur].connected_points.include?(data[:previous]) && !fields[cur].start?)
       { steps: 0, finished: true, current: nil, previous: }
     elsif fields[cur].start?
       { steps: data[:steps] + 1, finished: true, current: nil, previous: }
-    elsif fields[cur].ground?
-      { steps: 0, finished: true, current: nil, previous: }
-    elsif !fields[cur].connected_points.include?(data[:previous])
-      { steps: 0, finished: true, current: nil }
     else
-      next_point = fields[cur].connected_points.reject { |p| p == data[:previous] }.first
       { steps: data[:steps] + 1, finished: false, current: next_point, previous: }
     end
   end
 
   def part2(input)
-    data = parse_input(input)
+    parse_input(input)
   end
 end
 
 day = Day10.new
-# puts "Example: #{day.part1(day.example_input_a)}"
+puts "Example: #{day.part1(day.example_input_a)}"
 puts "Part 1: #{day.part1(day.input)}"
 # puts "Example: #{day.part2(day.example_input_a)}"
-# puts "Example: #{day.part2(day.input)}"
+# puts "Part 2: #{day.part2(day.input)}"

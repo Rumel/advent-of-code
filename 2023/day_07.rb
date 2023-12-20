@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class PokerHand
   attr_accessor :cards,
@@ -36,14 +38,14 @@ class PokerHand
   HAND_TYPE_ORDER = HAND_TYPES.zip((1..HAND_TYPES.length).to_a.reverse).to_h.freeze
 
   def initialize(cards, bid)
-    self.cards = cards.split('')
+    self.cards = cards.chars
     self.bid = bid
 
     uniq = self.cards.uniq
     uniq_count = uniq.length
     uniq = uniq.sort do |a, b|
       result = self.cards.count(b) <=> self.cards.count(a)
-      if result == 0
+      if result.zero?
         rank_of_card(b) <=> rank_of_card(a)
       else
         result
@@ -52,21 +54,22 @@ class PokerHand
 
     self.card_order = uniq.map { |c| rank_of_card(c) }
 
-    self.hand_type = if uniq_count == 1
+    self.hand_type = case uniq_count
+                     when 1
                        :FIVE_OF_A_KIND
-                     elsif uniq_count == 2
+                     when 2
                        if self.cards.count(uniq.first) == 4
                          :FOUR_OF_A_KIND
                        else
                          :FULL_HOUSE
                        end
-                     elsif uniq_count == 3
+                     when 3
                        if self.cards.count(uniq.first) == 3
                          :THREE_OF_A_KIND
                        else
                          :TWO_PAIR
                        end
-                     elsif uniq_count == 4
+                     when 4
                        :ONE_PAIR
                      else
                        :HIGH_CARD
@@ -85,7 +88,7 @@ class PokerHand
 
   def <=>(other)
     result = other.hand_type_rank <=> hand_type_rank
-    if result == 0
+    if result.zero?
       card_order.each_with_index do |card, index|
         card_result = other.card_order[index] <=> card
         return card_result if card_result != 0
@@ -142,36 +145,35 @@ class JokerPokerHand
   HAND_TYPE_ORDER = HAND_TYPES.zip((1..HAND_TYPES.length).to_a.reverse).to_h.freeze
 
   def initialize(cards, bid)
-    self.cards = cards.split('')
+    self.cards = cards.chars
     self.bid = bid
 
     uniq = self.cards.uniq.reject { |c| c == 'J' }
     uniq = uniq.sort do |a, b|
-      result = self.cards.count(b) <=> self.cards.count(a)
+      self.cards.count(b) <=> self.cards.count(a)
     end
 
     count = uniq.map { |c| self.cards.count(c) }
 
     self.card_order = self.cards.map { |c| rank_of_card(c) }
 
-    self.hand_type = if count[0] == 5
+    self.hand_type = case count[0]
+                     when 5
                        :FIVE_OF_A_KIND
-                     elsif count[0] == 4
+                     when 4
                        :FOUR_OF_A_KIND
-                     elsif count[0] == 3
+                     when 3
                        if count[1] == 2
                          :FULL_HOUSE
                        else
                          :THREE_OF_A_KIND
                        end
-                     elsif count[0] == 2
+                     when 2
                        if count[1] == 2
                          :TWO_PAIR
                        else
                          :ONE_PAIR
                        end
-                     elsif count[0] == 1
-                       :HIGH_CARD
                      else
                        :HIGH_CARD
                      end
@@ -205,7 +207,7 @@ class JokerPokerHand
 
   def <=>(other)
     result = other.hand_type_rank <=> hand_type_rank
-    if result == 0
+    if result.zero?
       cards.each_with_index do |card, index|
         card_result = rank_of_card(other.cards[index]) <=> rank_of_card(card)
         return card_result if card_result != 0
@@ -232,8 +234,8 @@ class Day07 < Base
   end
 
   def parse_input(input, klass)
-    poker_hands = input.split("\n").map do |line|
-      split = line.split(' ')
+    input.split("\n").map do |line|
+      split = line.split
       klass.new(split[0], split[1].to_i)
     end
   end

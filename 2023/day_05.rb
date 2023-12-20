@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Day05 < Base
   def day
@@ -45,21 +47,22 @@ class Day05 < Base
         next
       end
 
-      if component == :seeds
-        seeds = line.split(':')[1].split(' ').map(&:strip).map(&:to_i)
-      elsif component == :seed_to_soil
+      case component
+      when :seeds
+        seeds = line.split(':')[1].split.map(&:strip).map(&:to_i)
+      when :seed_to_soil
         seed_to_soil << get_range(line)
-      elsif component == :soil_to_fertilizer
+      when :soil_to_fertilizer
         soil_to_fertilizer << get_range(line)
-      elsif component == :fertilizer_to_water
+      when :fertilizer_to_water
         fertilizer_to_water << get_range(line)
-      elsif component == :water_to_light
+      when :water_to_light
         water_to_light << get_range(line)
-      elsif component == :light_to_temperature
+      when :light_to_temperature
         light_to_temperature << get_range(line)
-      elsif component == :temperature_to_humidity
+      when :temperature_to_humidity
         temperature_to_humidity << get_range(line)
-      elsif component == :humidity_to_location
+      when :humidity_to_location
         humidity_to_location << get_range(line)
       end
     end
@@ -111,7 +114,7 @@ class Day05 < Base
   private
 
   def get_range(line)
-    split = line.split(' ')
+    split = line.split
     length = split[2].to_i
     source = split[1].to_i
     destination = split[0].to_i
@@ -161,16 +164,14 @@ class Day05 < Base
           finished = true
         elsif current_num < ranges[i][0]
           i += 1
-        elsif current_num > ranges[i][1]
+        elsif current_num > ranges[i][1] # rubocop:disable Lint/DuplicateBranch
           i += 1
-        elsif current_num >= ranges[i][0] && current_num <= ranges[i][1]
-          if end_num <= ranges[i][1]
-            new_ranges << [current_num, end_num]
-            finished = true
-          else
-            new_ranges << [current_num, ranges[i][1]]
-            current_num = ranges[i][1] + 1
-          end
+        elsif end_num <= ranges[i][1] # rubocop:disable Lint/DuplicateBranch
+          new_ranges << [current_num, end_num]
+          finished = true
+        else
+          new_ranges << [current_num, ranges[i][1]]
+          current_num = ranges[i][1] + 1
         end
       end
     end

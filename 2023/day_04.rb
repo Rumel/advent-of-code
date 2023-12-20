@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Day04 < Base
   def day
@@ -9,10 +11,10 @@ class Day04 < Base
     games = []
     input.split("\n").each do |line|
       game_line = line.split(':')[1]
-      game_split = game_line.split('|').map { |x| x.strip }
+      game_split = game_line.split('|').map(&:strip)
       game = {}
-      game[:winning_numbers] = game_split[0].split(' ').map(&:to_i)
-      game[:player_numbers] = game_split[1].split(' ').map(&:to_i)
+      game[:winning_numbers] = game_split[0].split.map(&:to_i)
+      game[:player_numbers] = game_split[1].split.map(&:to_i)
       games << game
     end
     games
@@ -27,7 +29,7 @@ class Day04 < Base
       game[:winning_numbers].each do |winning_number|
         found += 1 if game[:player_numbers].include?(winning_number)
       end
-      next unless found > 0
+      next unless found.positive?
 
       current = 2**(found - 1)
       sum += current
@@ -45,7 +47,7 @@ class Day04 < Base
       end
       game[:num_matches] = found
 
-      game[:value] = if found > 0
+      game[:value] = if found.positive?
                        2**(found - 1)
                      else
                        0
@@ -58,7 +60,7 @@ class Day04 < Base
     end
 
     games.each_with_index do |game, index|
-      next unless game[:num_matches] > 0
+      next unless (game[:num_matches]).positive?
 
       (1..(game[:num_matches])).each do |i|
         current = games[index + i]

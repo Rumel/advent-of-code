@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 require 'digest'
 
 class Pattern
@@ -25,13 +27,13 @@ class Pattern
 
     lines.each do |l|
       row_hashes << Digest::MD5.hexdigest(l)
-      rows << l.split('')
+      rows << l.chars
     end
 
     length = lines.first.length
     (0...length).each do |i|
       chars = lines.map { |l| l[i] }
-      column_hashes << Digest::MD5.hexdigest(chars.join(''))
+      column_hashes << Digest::MD5.hexdigest(chars.join)
       columns << chars
     end
   end

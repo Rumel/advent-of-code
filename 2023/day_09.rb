@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Day09 < Base
   def day
@@ -7,7 +9,7 @@ class Day09 < Base
 
   def parse_input(input)
     input.split("\n").map do |line|
-      line.split(' ').map(&:to_i)
+      line.split.map(&:to_i)
     end
   end
 
@@ -16,7 +18,7 @@ class Day09 < Base
 
     next_value = []
     data.each do |line|
-      length = line.length
+      line.length
       finished = false
       finals = []
       finals << line.last
@@ -25,7 +27,7 @@ class Day09 < Base
         i = 0
         diffs = []
         while i < current.length - 1
-          diffs << current[i + 1] - current[i]
+          diffs << (current[i + 1] - current[i])
           i += 1
         end
         finished = diffs.all? 0
@@ -42,7 +44,7 @@ class Day09 < Base
 
     previous_values = []
     data.each do |line|
-      length = line.length
+      line.length
       finished = false
       finals = []
       current = line
@@ -50,7 +52,7 @@ class Day09 < Base
         i = 0
         diffs = []
         while i < current.length - 1
-          diffs << current[i + 1] - current[i]
+          diffs << (current[i + 1] - current[i])
           i += 1
         end
         finished = diffs.all? 0
@@ -62,7 +64,7 @@ class Day09 < Base
       finals.reverse.each do |final|
         x = final - x
       end
-      previous_values << line.first - x
+      previous_values << (line.first - x)
     end
     previous_values.sum
   end

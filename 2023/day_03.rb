@@ -1,4 +1,6 @@
-require_relative './base'
+# frozen_string_literal: true
+
+require_relative 'base'
 
 class Day03 < Base
   def day
@@ -24,7 +26,7 @@ class Day03 < Base
 
     input.split("\n").each_with_index do |line, y|
       current_num = ''
-      line.split('').each_with_index do |char, x|
+      line.chars.each_with_index do |char, x|
         if number?(char)
           current_num += char
         elsif current_num != ''
@@ -50,7 +52,7 @@ class Day03 < Base
       }
     end
 
-    { numbers:, lines: input.split("\n").map { |line| line.split('') } }
+    { numbers:, lines: input.split("\n").map(&:chars) }
   end
 
   def part1(input)
@@ -60,8 +62,12 @@ class Day03 < Base
     height = parsed[:lines].length
     width =  parsed[:lines].first.length
     parsed[:numbers].each do |value|
-      x_range = (value[:x_start].positive? ? value[:x_start] - 1 : 0)..(value[:x_end] + 1 == width ? value[:x_end] : value[:x_end] + 1)
-      y_range = (value[:y_start] > 0 ? value[:y_start] - 1 : value[:y_start])..(value[:y_end] + 1 == height ? value[:y_end] : value[:y_end] + 1)
+      x_range =
+        (value[:x_start].positive? ? value[:x_start] - 1 : 0)..(
+          value[:x_end] + 1 == width ? value[:x_end] : value[:x_end] + 1)
+      y_range =
+        ((value[:y_start]).positive? ? value[:y_start] - 1 : value[:y_start])..(
+          value[:y_end] + 1 == height ? value[:y_end] : value[:y_end] + 1)
       found_symbol = false
       y_range.each do |y|
         x_range.each do |x|
@@ -82,8 +88,12 @@ class Day03 < Base
     height = parsed[:lines].length
     width =  parsed[:lines].first.length
     parsed[:numbers].each do |value|
-      x_range = (value[:x_start].positive? ? value[:x_start] - 1 : 0)..(value[:x_end] + 1 == width ? value[:x_end] : value[:x_end] + 1)
-      y_range = (value[:y_start] > 0 ? value[:y_start] - 1 : value[:y_start])..(value[:y_end] + 1 == height ? value[:y_end] : value[:y_end] + 1)
+      x_range =
+        (value[:x_start].positive? ? value[:x_start] - 1 : 0)..(
+          value[:x_end] + 1 == width ? value[:x_end] : value[:x_end] + 1)
+      y_range =
+        ((value[:y_start]).positive? ? value[:y_start] - 1 : value[:y_start])..(
+          value[:y_end] + 1 == height ? value[:y_end] : value[:y_end] + 1)
       gear = nil
       y_range.each do |y|
         x_range.each do |x|
