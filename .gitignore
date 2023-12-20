@@ -1,1 +1,4 @@
 .DS_store
+.clj-kondo/
+.lsp/
+.vscode/
