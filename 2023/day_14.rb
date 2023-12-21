@@ -140,12 +140,25 @@ class Day14 < Base
   end
 
   def part_2(input)
-    data = parse_input(input)
+    board = parse_input(input)
+
+    # Add cycle detection
+    scores = []
+    1000.times do
+      board.move_rocks('up')
+      board.move_rocks('left')
+      board.move_rocks('down')
+      board.move_rocks('right')
+      scores.push(board.score)
+    end
+
+    puts scores.inspect
 
     0
   end
 end
 
 day = Day14.new
-puts "Example: #{day.part_1(day.example_input_a)}"
-puts "Part 1: #{day.part_1(day.input)}"
+# puts "Example: #{day.part_1(day.example_input_a)}"
+# puts "Part 1: #{day.part_1(day.input)}"
+puts "Example: #{day.part_2(day.example_input_a)}"
