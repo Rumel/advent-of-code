@@ -18,7 +18,6 @@ class Day09 < Base
 
     next_value = []
     data.each do |line|
-      line.length
       finished = false
       finals = []
       finals << line.last
