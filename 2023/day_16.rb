@@ -35,8 +35,8 @@ class Board
     end
   end
 
-  def traverse_board
-    current = [[[0, 0], [1, 0]]]
+  def traverse_board(starting_point = [0, 0], starting_direction = [1, 0])
+    current = [[starting_point, starting_direction]]
 
     until current.empty?
       next_points = []
@@ -88,6 +88,44 @@ class Board
     end
   end
 
+  def find_best_starting_point
+    max = 0
+
+    (0...width).each do |x|
+      # top row
+      traverse_board([x, 0], [0, 1])
+      max = [max, energized_points].max
+      reset_energized
+
+      # bottom row
+      traverse_board([x, height - 1], [0, -1])
+      max = [max, energized_points].max
+      reset_energized
+    end
+
+    (0...height).each do |y|
+      # left side
+      traverse_board([0, y], [1, 0])
+      max = [max, energized_points].max
+      reset_energized
+
+      # right side
+      traverse_board([width - 1, y], [-1, 0])
+      max = [max, energized_points].max
+      reset_energized
+    end
+
+    max
+  end
+
+  def energized_points
+    visited_points.map { |x| x[0] }.uniq.length
+  end
+
+  def reset_energized
+    @visited_points = Set.new
+  end
+
   def print_energized
     points = visited_points.map { |x| x[0] }.uniq
 
@@ -117,17 +155,17 @@ class Day16 < Base
   def part_1(input)
     board = parse_input(input)
     board.traverse_board
-    # board.print_energized
-
-    board.visited_points.map { |x| x[0] }.uniq.length
+    board.energized_points
   end
 
   def part_2(input)
-    data = parse_input(input)
-    0
+    board = parse_input(input)
+    board.find_best_starting_point
   end
 end
 
 day = Day16.new
 puts "Example: #{day.part_1(day.example_input_a)}"
 puts "Example: #{day.part_1(day.input)}"
+puts "Example: #{day.part_2(day.example_input_a)}"
+puts "Example: #{day.part_2(day.input)}"
