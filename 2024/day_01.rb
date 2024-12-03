@@ -8,7 +8,7 @@ class Day01 < Base
   end
 
   def parse_input(input)
-    numbers = input.split("\n").map {|x| x.split(/\s+/).map(&:to_i) }
+    numbers = input.split("\n").map { |x| x.split(/\s+/).map(&:to_i) }
   end
 
   def part_1(file)
