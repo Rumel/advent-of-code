@@ -56,10 +56,6 @@ class Day05 < Base # rubocop:disable Style/Documentation
 
   def part_2(file) # rubocop:disable Naming/VariableNumber
     graph = parse_input(file)
-    # second_graph = graph.dup
-    # second_graph.delete 'updates'
-    # order = second_graph.map { |k, v| [k, v.length] }.sort_by { |k, v| -v }.map(&:first)
-    # order << second_graph.select { |k, v| v.length == 1 }.to_a[0][1][0]
 
     count = 0
     graph['updates'].each do |update|
