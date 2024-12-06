@@ -56,26 +56,34 @@ class Day05 < Base # rubocop:disable Style/Documentation
 
   def part_2(file) # rubocop:disable Naming/VariableNumber
     graph = parse_input(file)
-    second_graph = graph.dup
-    second_graph.delete 'updates'
-    order = second_graph.map { |k, v| [k, v.length] }.sort_by { |k, v| -v }.map(&:first)
+    # second_graph = graph.dup
+    # second_graph.delete 'updates'
+    # order = second_graph.map { |k, v| [k, v.length] }.sort_by { |k, v| -v }.map(&:first)
     # order << second_graph.select { |k, v| v.length == 1 }.to_a[0][1][0]
 
     count = 0
     graph['updates'].each do |update|
-      next unless get_value(graph, update) == 0
+      next unless get_value(graph, update).zero?
 
       new_order = []
-      order.each do |o|
-        new_order << o if update.include? o
-      end
-      l = new_order.length
+      update.each do |o|
+        if new_order.empty?
+          new_order << o
+        else
+          inserted = false
+          new_order.each_with_index do |no, index|
+            next if graph[no]&.include? o
 
-      count += if l.even?
-                 new_order[(l + 1) / 2]
-               else
-                 new_order[l / 2]
-               end
+            inserted = true
+            new_order.insert(index, o)
+            break
+          end
+
+          new_order << o unless inserted
+        end
+      end
+      puts new_order.inspect
+      count += new_order[new_order.length / 2]
     end
 
     count
@@ -84,7 +92,7 @@ end
 
 day = Day05.new
 
-# puts "Example 1: #{day.part_1(day.example_input_a)}"
-# puts "Part 1: #{day.part_1(day.input)}"
+puts "Example 1: #{day.part_1(day.example_input_a)}"
+puts "Part 1: #{day.part_1(day.input)}"
 puts "Example 2: #{day.part_2(day.example_input_a)}"
 puts "Part 2: #{day.part_2(day.input)}"
