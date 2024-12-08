@@ -26,4 +26,8 @@ class Base
   def input
     @input ||= File.read(File.join(__dir__, "data/#{day}_input.txt"))
   end
+
+  def deep_dup(obj)
+    Marshal.load(Marshal.dump(obj))
+  end
 end
